@@ -321,7 +321,7 @@ int main(int argc, char **argv)
 	if (parse_pes(&region, &pes) < 0)
 		die("Unable to parse PES file\n");
 
-	output_png(&pes);
+	output_cairo(&pes);
 
 	return 0;
 }

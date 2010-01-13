@@ -1,5 +1,5 @@
 CC=gcc
 CFLAGS=-Wall -g
 
-pesconvert: pes.o svg.o png.o
-	$(CC) -o $@ $^ -lpng
+pesconvert: pes.o svg.o png.o cairo.o
+	$(CC) -o $@ $^ -lpng -lcairo

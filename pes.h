@@ -25,5 +25,6 @@ struct pes {
 
 void output_svg(struct pes *pes);
 void output_png(struct pes *pes);
+void output_cairo(struct pes *pes);
 
 #endif /* PES_H */

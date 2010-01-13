@@ -321,7 +321,7 @@ int main(int argc, char **argv)
 	if (parse_pes(&region, &pes) < 0)
 		die("Unable to parse PES file\n");
 
-	output_svg(&pes);
+	output_png(&pes);
 
 	return 0;
 }

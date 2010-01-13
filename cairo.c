@@ -5,14 +5,19 @@
 #define X(stitch) ((double)((stitch)->x - pes->min_x) * outw / width)
 #define Y(stitch) ((double)((stitch)->y - pes->min_y) * outh / height)
 
-void output_cairo(struct pes *pes)
+void output_cairo(struct pes *pes, const char *filename, int size)
 {
 	int width  = pes->max_x - pes->min_x + 1;
 	int height = pes->max_y - pes->min_y + 1;
-	int outw = 256, outh = 256;
+	int outw = width, outh = height;
 	struct pes_block *block;
 	cairo_surface_t *surface;
 	cairo_t *cr;
+
+	if (size > 0) {
+		outw = size;
+		outh = size;
+	}
 
 	surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, outw, outh);
 	cr = cairo_create (surface);
@@ -35,5 +40,5 @@ void output_cairo(struct pes *pes)
 
 		block = block->next;
 	}
-	cairo_surface_write_to_png(surface, "out.png");
+	cairo_surface_write_to_png(surface, filename);
 }

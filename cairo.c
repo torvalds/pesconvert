@@ -5,7 +5,7 @@
 #define X(stitch) (((stitch)->x - pes->min_x) * scale)
 #define Y(stitch) (((stitch)->y - pes->min_y) * scale)
 
-void output_cairo(struct pes *pes, const char *filename, int size)
+void output_cairo(struct pes *pes, const char *filename, int size, double density)
 {
 	int width  = pes->max_x - pes->min_x, outw;
 	int height = pes->max_y - pes->min_y, outh;
@@ -37,7 +37,9 @@ void output_cairo(struct pes *pes, const char *filename, int size)
 			++stitch;
 			cairo_line_to(cr, X(stitch), Y(stitch));
 		}
-		cairo_set_line_width(cr, scale);
+		cairo_set_line_width(cr, scale * density);
+		cairo_set_line_cap(cr, CAIRO_LINE_CAP_ROUND);
+		cairo_set_line_join(cr, CAIRO_LINE_JOIN_ROUND);
 		cairo_stroke(cr);
 
 		block = block->next;

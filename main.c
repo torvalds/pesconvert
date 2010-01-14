@@ -23,6 +23,7 @@ static void die(const char *fmt, ...)
 
 int main(int argc, char **argv)
 {
+	double density = 1.0;
 	int i, outputsize = -1;
 	const char *output = NULL;
 	struct region region;
@@ -41,6 +42,10 @@ int main(int argc, char **argv)
 			switch (arg[1]) {
 			case 's':
 				outputsize = atoi(argv[i+1]);
+				i++;
+				continue;
+			case 'd':
+				density = atof(argv[i+1]);
 				i++;
 				continue;
 			}
@@ -70,7 +75,7 @@ int main(int argc, char **argv)
 	if (!output)
 		die("Need a png output file name\n");
 
-	output_cairo(&pes, output, outputsize);
+	output_cairo(&pes, output, outputsize, density);
 
 	return 0;
 }

@@ -36,6 +36,6 @@ int parse_pes(struct region *region, struct pes *pes);
 /* Output */
 void output_svg(struct pes *pes);
 void output_png(struct pes *pes);
-void output_cairo(struct pes *pes, const char *filename, int size);
+void output_cairo(struct pes *pes, const char *filename, int size, double density);
 
 #endif /* PES_H */

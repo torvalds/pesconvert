@@ -16,7 +16,7 @@ void output_png(struct pes *pes)
 	png_infop info_ptr;
 
 	rows = calloc(sizeof(*rows), outh);
-	for (i = 0; i < height; i++)
+	for (i = 0; i < outh; i++)
 		rows[i] = calloc(sizeof(png_byte)*4, outw);
 
 	block = pes->blocks;

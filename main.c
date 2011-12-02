@@ -32,7 +32,6 @@ int main(int argc, char **argv)
 		.min_y = 65535, .max_y = -65535,
 		.blocks = NULL,
 		.last = NULL,
-		.listp = &pes.blocks,
 	};
 
 	for (i = 1; i < argc; i++) {

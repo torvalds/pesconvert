@@ -158,16 +158,12 @@ static int parse_pes_colors(struct region *region, unsigned int pec)
 
 static struct pes_block *new_block(struct pes *pes)
 {
-	int size = sizeof(struct pes_block) + 64*sizeof(struct stitch);
-	struct pes_block *block = malloc(size);
+	struct pes_block *block = calloc(1, sizeof(*block));
 
 	if (block) {
-		memset(block, 0, size);
-		block->max_stitches = 64;
-
+		struct pes_block **pp = pes->last ? &pes->last->next : &pes->blocks;
+		*pp = block;
 		pes->last = block;
-		*pes->listp = block;
-		pes->listp = &block->next;
 		block->color = my_colors[pes->nr_colors++];
 	}
 	return block;
@@ -176,6 +172,7 @@ static struct pes_block *new_block(struct pes *pes)
 static int add_stitch(struct pes *pes, int x, int y)
 {
 	struct pes_block *block = pes->last;
+	struct stitch *stitch = block->stitch;
 	int nr_stitches = block->nr_stitches;
 
 	if (x < pes->min_x)
@@ -189,14 +186,15 @@ static int add_stitch(struct pes *pes, int x, int y)
 
 	if (block->max_stitches == nr_stitches) {
 		int new_stitches = (nr_stitches * 3) / 2 + 64;
-		int size = sizeof(struct pes_block) + new_stitches*sizeof(struct stitch);
-		block = realloc(block, size);
-		if (!block)
+		int size = new_stitches*sizeof(struct stitch);
+		stitch = realloc(stitch, size);
+		if (!stitch)
 			return -1;
 		block->max_stitches = new_stitches;
+		block->stitch = stitch;
 	}
-	block->stitch[nr_stitches].x = x;
-	block->stitch[nr_stitches].y = y;
+	stitch[nr_stitches].x = x;
+	stitch[nr_stitches].y = y;
 	block->nr_stitches = nr_stitches+1;
 	return 0;
 }

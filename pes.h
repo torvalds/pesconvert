@@ -12,7 +12,7 @@ struct color {
 };
 
 struct stitch {
-	int x, y;
+	int x, y, jumpstitch;
 };
 
 struct pes_block {

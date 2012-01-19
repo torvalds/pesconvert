@@ -35,7 +35,8 @@ void output_cairo(struct pes *pes, const char *filename, int size, double densit
 
 		for (i = 1; i < block->nr_stitches; i++) {
 			++stitch;
-			cairo_line_to(cr, X(stitch), Y(stitch));
+			if(!stitch->jumpstitch) cairo_line_to(cr, X(stitch), Y(stitch));
+			else cairo_move_to(cr, X(stitch), Y(stitch));
 		}
 		cairo_set_line_width(cr, scale * density);
 		cairo_set_line_cap(cr, CAIRO_LINE_CAP_ROUND);

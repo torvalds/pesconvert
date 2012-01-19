@@ -169,7 +169,7 @@ static struct pes_block *new_block(struct pes *pes)
 	return block;
 }
 
-static int add_stitch(struct pes *pes, int x, int y)
+static int add_stitch(struct pes *pes, int x, int y, int jumpstitch)
 {
 	struct pes_block *block = pes->last;
 	struct stitch *stitch = block->stitch;
@@ -195,6 +195,7 @@ static int add_stitch(struct pes *pes, int x, int y)
 	}
 	stitch[nr_stitches].x = x;
 	stitch[nr_stitches].y = y;
+	stitch[nr_stitches].jumpstitch = jumpstitch;
 	block->nr_stitches = nr_stitches+1;
 	return 0;
 }
@@ -213,7 +214,7 @@ static int parse_pes_stitches(struct region *region, unsigned int pec, struct pe
 	block = new_block(pes);
 
 	while (p < end) {
-		int val1 = p[0], val2 = p[1];
+		int val1 = p[0], val2 = p[1], jumpstitch = 0;
 		p += 2;
 		if (val1 == 255 && !val2)
 			return 0;
@@ -234,6 +235,7 @@ static int parse_pes_stitches(struct region *region, unsigned int pec, struct pe
 			if (val1 & 2048)
 				val1 -= 4096;
 			val2 = *p++;
+			jumpstitch = 1;
 		} else {
 			if (val1 & 64)
 				val1 -= 128;
@@ -255,7 +257,7 @@ static int parse_pes_stitches(struct region *region, unsigned int pec, struct pe
 		oldx = val1;
 		oldy = val2;
 
-		if (add_stitch(pes, val1, val2))
+		if (add_stitch(pes, val1, val2, jumpstitch))
 			return -1;
 	}
 	return 0;

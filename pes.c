@@ -246,6 +246,7 @@ static int parse_pes_stitches(struct region *region, unsigned int pec, struct pe
 			/* Signed 12-bit arithmetic */
 			if (val2 & 2048)
 				val2 -= 4096;
+			jumpstitch = 1;
 		} else {
 			if (val2 & 64)
 				val2 -= 128;

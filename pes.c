@@ -212,6 +212,8 @@ static int parse_pes_stitches(struct region *region, unsigned int pec, struct pe
 	oldx = oldy = 0;
 
 	block = new_block(pes);
+	if (!block)
+		return -1;
 
 	while (p < end) {
 		int val1 = p[0], val2 = p[1], jumpstitch = 0;

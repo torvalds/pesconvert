@@ -10,7 +10,6 @@ void output_cairo(struct pes *pes, const char *filename, int size, double densit
 	int width  = pes->max_x - pes->min_x, outw;
 	int height = pes->max_y - pes->min_y, outh;
 	double scale = 1.0;
-	struct pes_block *block;
 	cairo_surface_t *surface;
 	cairo_t *cr;
 
@@ -24,8 +23,7 @@ void output_cairo(struct pes *pes, const char *filename, int size, double densit
 	surface = cairo_image_surface_create (CAIRO_FORMAT_ARGB32, outw+1, outh+1);
 	cr = cairo_create (surface);
 
-	block = pes->blocks;
-	while (block) {
+	for (struct pes_block *block = pes->blocks; block; block = block->next) {
 		struct color *c = block->color;
 		struct stitch *stitch = block->stitch;
 		int i;
@@ -42,8 +40,6 @@ void output_cairo(struct pes *pes, const char *filename, int size, double densit
 		cairo_set_line_cap(cr, CAIRO_LINE_CAP_ROUND);
 		cairo_set_line_join(cr, CAIRO_LINE_JOIN_ROUND);
 		cairo_stroke(cr);
-
-		block = block->next;
 	}
 	cairo_surface_write_to_png(surface, filename);
 }

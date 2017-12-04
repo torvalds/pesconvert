@@ -3,8 +3,6 @@
 
 void output_svg(struct pes *pes)
 {
-	struct pes_block *block = pes->blocks;
-
 	printf("<?xml version=\"1.0\"?>\n");
 	printf("<svg xmlns=\"http://www.w3.org/2000/svg\" "
 		"xlink=\"http://www.w3.org/1999/xlink\" "
@@ -15,7 +13,7 @@ void output_svg(struct pes *pes)
 		pes->max_x - pes->min_x,
 		pes->max_y - pes->min_y);
 
-	while (block) {
+	for (struct pes_block *block = pes->blocks; block; block = block->next) {
 		int i;
 		printf("<path stroke=\"#%02x%02x%02x\" fill=\"none\" d=\"M %d %d",
 			block->color->r,
@@ -28,8 +26,6 @@ void output_svg(struct pes *pes)
 				block->stitch[i].x - pes->min_x,
 				block->stitch[i].y - pes->min_y);
 		printf("\"/>");
-
-		block = block->next;
 	}
 	printf("</svg>\n");
 }

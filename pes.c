@@ -161,7 +161,13 @@ static struct pes_block *new_block(struct pes *pes)
 	struct pes_block *block = calloc(1, sizeof(*block));
 
 	if (block) {
-		block->color = my_colors[pes->nr_colors++];
+		unsigned color = pes->nr_colors++;
+		if (color >= sizeof(my_colors) / sizeof(my_colors[0])) {
+			free(block);
+			return NULL;
+		}
+
+		block->color = my_colors[color];
 		if (!block->color) {
 			free(block);
 			return NULL;

@@ -28,6 +28,9 @@ void output_cairo(struct pes *pes, const char *filename, int size, double densit
 		struct stitch *stitch = block->stitch;
 		int i;
 
+		if (!block->nr_stitches)
+			continue;
+
 		cairo_set_source_rgb(cr, c->r / 255.0, c->g / 255.0, c->b / 255.0);
 		cairo_move_to(cr, X(stitch), Y(stitch));
 

@@ -14,6 +14,9 @@ void output_svg(struct pes *pes)
 		pes->max_y - pes->min_y);
 
 	for (struct pes_block *block = pes->blocks; block; block = block->next) {
+		if (!block->nr_stitches)
+			continue;
+
 		int i;
 		printf("<path stroke=\"#%02x%02x%02x\" fill=\"none\" d=\"M %d %d",
 			block->color->r,

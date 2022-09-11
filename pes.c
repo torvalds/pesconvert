@@ -20,6 +20,9 @@
 
 #include "pes.h"
 
+#define JUMP 0x10
+#define TRIM 0x20
+
 static struct color color_def[256] = {
 	{ NULL, 0, 0, 0 },
 	{ "Color1",		 14,  31, 124 },
@@ -243,23 +246,25 @@ static int parse_pes_stitches(struct region *region, unsigned int pec, struct pe
 
 		/* High bit set means 12-bit offset, otherwise 7-bit signed delta */
 		if (val1 & 0x80) {
+			if (val1 & JUMP || val1 & TRIM)
+				jumpstitch = 1;
 			val1 = ((val1 & 15) << 8) + val2;
 			/* Signed 12-bit arithmetic */
 			if (val1 & 2048)
 				val1 -= 4096;
 			val2 = *p++;
-			jumpstitch = 1;
 		} else {
 			if (val1 & 64)
 				val1 -= 128;
 		}
 
 		if (val2 & 0x80) {
+			if (val2 & JUMP || val2 & TRIM)
+				jumpstitch = 1;
 			val2 = ((val2 & 15) << 8) + *p++;
 			/* Signed 12-bit arithmetic */
 			if (val2 & 2048)
 				val2 -= 4096;
-			jumpstitch = 1;
 		} else {
 			if (val2 & 64)
 				val2 -= 128;

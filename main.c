@@ -33,7 +33,10 @@ int main(int argc, char **argv)
 		.blocks = NULL,
 		.last = NULL,
 	};
-
+	
+	if (argc < 3)
+		die("Too few arguments\n");
+	
 	for (i = 1; i < argc; i++) {
 		const char *arg = argv[i];
 
